@@ -4,12 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 public class GamePanel extends JPanel implements KeyListener {
 
     public static final int gridSize = 20; //set grid size n^2
     private final Timer timer;
     private Snake snake;
+    private Food food;
+    private Random random;
 
     //GamePanel gamePanel = new GamePanel(snake);
 
@@ -19,6 +22,9 @@ public class GamePanel extends JPanel implements KeyListener {
         setBackground(Color.BLACK);
         setFocusable(true);
         addKeyListener(this);
+
+        random = new Random();
+        food = new Food(random.nextInt(gridSize), random.nextInt(gridSize));
 
         timer = new Timer(100, new ActionListener() {
             @Override
@@ -73,10 +79,17 @@ public class GamePanel extends JPanel implements KeyListener {
 
     public void tick(Snake snake) {
         snake.move();
-         if (snake.checkCollision()) {
+
+        if (snake.checkCollision()) {
             timer.stop();
-           JOptionPane.showMessageDialog(this, "Game Over");
+            JOptionPane.showMessageDialog(this, "Game Over");
         }
+
+        if (snake.getHead().equals(new Point(food.getX(), food.getY()))) {
+            snake.grow(food.getX(), food.getY());
+            food = new Food(random.nextInt(gridSize), random.nextInt(gridSize));
+        }
+
         repaint();
     }
 
@@ -98,6 +111,10 @@ public class GamePanel extends JPanel implements KeyListener {
             g.setColor(Color.WHITE);
             g.fillRect(segment.x * 20, segment.y * 20, 20, 20);
         }
+
+        // draw food
+        g.setColor(Color.RED);
+        g.fillRect(food.getX() * 20, food.getY() * 20, 20, 20);
 
 }
 

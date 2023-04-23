@@ -76,6 +76,11 @@ public class Snake {
             }
         }
 
+
+
         return false;
+    }
+    public void grow(int foodX, int foodY) {
+        segments.add(0, new Point(foodX, foodY));
     }
 }
