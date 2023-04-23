@@ -1,52 +1,81 @@
-import java.awt.Point; // point is a class that represents a location in (x,y) coordinate space, specified in integer precision.
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Snake {
-    private Point head;
-    private int length;
-    private int direction;
-    private List<Point> segments;
+    public static final int UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3;
+    private int direction = UP;
+    private ArrayList<Point> segments = new ArrayList<>();
+    private boolean hasEaten = false;
 
-    public Snake(){
-        head = new Point(GamePanel.WIDTH / 2, GamePanel.HEIGHT / 2);
-        segments = new ArrayList<Point>();
-        segments.add(new Point(1, 1));
+    public Snake() {
+        segments.add(new Point(GamePanel.gridSize / 2, GamePanel.gridSize / 2));
+        segments.add(new Point(GamePanel.gridSize / 2, GamePanel.gridSize / 2 + 1));
+        segments.add(new Point(GamePanel.gridSize / 2, GamePanel.gridSize / 2 + 2));
+    }
+
+    public void move() {
+        Point newHead = (Point) getHead().clone();
+
+        switch (direction) {
+            case UP:
+                newHead.y--;
+                break;
+            case RIGHT:
+                newHead.x++;
+                break;
+            case DOWN:
+                newHead.y++;
+                break;
+            case LEFT:
+                newHead.x--;
+                break;
+        }
+
+        segments.add(0, newHead);
+
+        if (!hasEaten) {
+            segments.remove(segments.size() - 1);
+        } else {
+            hasEaten = false;
+        }
+    }
+
+    public void setDirection(int direction) {
+        if ((this.direction == UP && direction != DOWN)
+                || (this.direction == RIGHT && direction != LEFT)
+                || (this.direction == DOWN && direction != UP)
+                || (this.direction == LEFT && direction != RIGHT)) {
+            this.direction = direction;
+        }
     }
 
     public Point getHead() {
-        return head;
+        return segments.get(0);
     }
 
-    public void move(int dx, int dy) {
-        for (int i = segments.size() - 1; i > 0; i--) { //move every segment to the position of the segment in front of it (except the head)
-            Point currPos = segments.get(i);
-            Point prevPos = segments.get(i - 1);
-            currPos.setLocation(prevPos);
-        }
-        Point head = segments.get(0); //move the head
-        head.translate(dx, dy);
+    public ArrayList<Point> getSegments() {
+        return segments;
     }
 
-    public void grow() {
-        Point tailPos = segments.get(segments.size() - 1);
-        segments.add(new Point(tailPos));
+    public void eat() {
+        hasEaten = true;
     }
 
     public boolean checkCollision() {
-        if (head.x < 0 || head.x >= GamePanel.WIDTH || head.y < 0 || head.y >= GamePanel.HEIGHT) {
+        Point head = segments.get(0);
+
+        // Check for collision with the walls
+        if (head.x < 0 || head.x >= GamePanel.gridSize || head.y < 0 || head.y >= GamePanel.gridSize) {
             return true;
         }
+
+        // Check for collision with the body
         for (int i = 1; i < segments.size(); i++) {
             if (head.equals(segments.get(i))) {
                 return true;
             }
         }
+
         return false;
-    }
-
-
-    public List<Point> getSegments() {
-        return segments;
     }
 }

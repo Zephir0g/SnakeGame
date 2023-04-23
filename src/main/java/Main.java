@@ -8,10 +8,12 @@ public class Main {
         JFrame frame = new JFrame("Snake Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GamePanel gamePanel = new GamePanel(); //object of a gamePanel class
+        Snake snake = new Snake(); //object of a snake class
+        GamePanel gamePanel = new GamePanel(snake); //object of a gamePanel class
         frame.add(gamePanel);
 
         frame.pack(); // This method is used to set the size of the frame to the size of the panel.
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setResizable(false);
     }
