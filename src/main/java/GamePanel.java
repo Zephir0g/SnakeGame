@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements KeyListener {
         addKeyListener(this);
 
 
-        timer = new Timer(300, new ActionListener() {
+        timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tick(snake);
@@ -69,12 +69,26 @@ public class GamePanel extends JPanel implements KeyListener {
 
         Snake snakeInstance = snake;
 
+        //draw grid
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                g.drawRect(i * 20, j * 20, 20, 20);
+            }
+        }
 
+        // draw snake
         for (Point segment : snakeInstance.getSegments()) {
             g.setColor(Color.WHITE);
             g.fillRect(segment.x * 20, segment.y * 20, 20, 20);
         }
+
+        if (snakeInstance.checkCollision()) {
+            timer.stop();
+            JOptionPane.showMessageDialog(this, "Game Over");
+        }
     }
+
+
 
     //The getPreferredSize() method returns the preferred size of the component, which we set to 400x400 pixels.
     // The getMinimumSize() method returns the minimum size of the component, which is equal to the preferred size in this case.

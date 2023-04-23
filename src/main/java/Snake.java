@@ -3,12 +3,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Snake {
-
+    private Point head;
+    private int length;
+    private int direction;
     private List<Point> segments;
 
     public Snake(){
+        head = new Point(GamePanel.WIDTH / 2, GamePanel.HEIGHT / 2);
         segments = new ArrayList<Point>();
         segments.add(new Point(1, 1));
+    }
+
+    public Point getHead() {
+        return head;
     }
 
     public void move(int dx, int dy) {
@@ -17,14 +24,27 @@ public class Snake {
             Point prevPos = segments.get(i - 1);
             currPos.setLocation(prevPos);
         }
-        Point headPos = segments.get(0); //move the head
-        headPos.translate(dx, dy);
+        Point head = segments.get(0); //move the head
+        head.translate(dx, dy);
     }
 
     public void grow() {
         Point tailPos = segments.get(segments.size() - 1);
-                segments.add(new Point(tailPos));
+        segments.add(new Point(tailPos));
     }
+
+    public boolean checkCollision() {
+        if (head.x < 0 || head.x >= GamePanel.WIDTH || head.y < 0 || head.y >= GamePanel.HEIGHT) {
+            return true;
+        }
+        for (int i = 1; i < segments.size(); i++) {
+            if (head.equals(segments.get(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public List<Point> getSegments() {
         return segments;
