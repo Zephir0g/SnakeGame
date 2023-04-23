@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class GamePanel extends JPanel implements KeyListener {
 
-    public static final int gridSize = 20; //set grid size n^2
+    public static final int gridSize = 15; //set grid size n^2
     private final Timer timer;
     private Snake snake;
     private Food food;
@@ -80,9 +80,26 @@ public class GamePanel extends JPanel implements KeyListener {
     public void tick(Snake snake) {
         snake.move();
 
+        // exit/restart game if snake collides
         if (snake.checkCollision()) {
             timer.stop();
-            JOptionPane.showMessageDialog(this, "Game Over");
+            int choice = JOptionPane.showOptionDialog(
+                    this,
+                    "Game Over",
+                    "Game Over",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    new Object[]{"Restart", "Exit"},
+                    null);
+            if (choice == JOptionPane.YES_OPTION) {
+                // restart the game
+                snake.reset();
+                food = new Food(random.nextInt(gridSize), random.nextInt(gridSize));
+                timer.start();
+            } else {
+                System.exit(0);
+            }
         }
 
         if (snake.getHead().equals(new Point(food.getX(), food.getY()))) {
@@ -93,18 +110,45 @@ public class GamePanel extends JPanel implements KeyListener {
         repaint();
     }
 
+//    public void createRestartButton() {
+//        // Add restart button
+//        addRestartButton();
+//    }
+
+//    private void addRestartButton() {
+//        JButton restartButton = new JButton("Restart");
+//        restartButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                // Call reset method of the snake
+//                snake.reset();
+//            }
+//        });
+//        add(restartButton);
+//    }
+
+
+//    public void reset() {
+//        // Reset snake and food
+//        snake = new Snake();
+//        food = new Food(random.nextInt(gridSize), random.nextInt(gridSize));
+//
+//        // Restart timer
+//        timer.restart();
+//    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         //Snake snakeInstance = snake;
 
-        //draw grid
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                g.drawRect(i * 20, j * 20, 20, 20);
-            }
-        }
+//        //draw grid
+//        for (int i = 0; i < gridSize; i++) {
+//            for (int j = 0; j < gridSize; j++) {
+//                g.drawRect(i * 20, j * 20, 20, 20);
+//            }
+//        }
 
         // draw snake
         for (Point segment : snake.getSegments()) {
