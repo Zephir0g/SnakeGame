@@ -1,3 +1,5 @@
+package game.classes;
+
 import java.util.Random;
 
 public class Food {

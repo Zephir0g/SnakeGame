@@ -1,3 +1,8 @@
+package game.logic;
+
+import game.classes.Food;
+import game.classes.Snake;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +18,8 @@ public class GamePanel extends JPanel implements KeyListener {
         private Snake snake;
         private Food food;
         private Random random;
+        private GameSound gameSound = new GameSound();
+        private GameSound playEatSound = new GameSound();
 
 
     public GamePanel(Snake snake) {
@@ -21,6 +28,7 @@ public class GamePanel extends JPanel implements KeyListener {
         setBackground(Color.BLACK);
         setFocusable(true);
         addKeyListener(this);
+        playStartSound();
 
         random = new Random();
         food = new Food(random.nextInt(gridSize), random.nextInt(gridSize));
@@ -32,6 +40,9 @@ public class GamePanel extends JPanel implements KeyListener {
             }
         });
         timer.start();
+    }
+    public void playStartSound() {
+        gameSound.playStartSound();
     }
 
     public void changeDifficulty(int interval) {
@@ -77,16 +88,24 @@ public class GamePanel extends JPanel implements KeyListener {
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.PLAIN_MESSAGE,
                     null,
-                    new Object[]{"Restart", "Exit"},
+                    new Object[]{"Restart", "Main Menu"},
                     null);
             if (choice == JOptionPane.YES_OPTION) {
                 // restart the game
                 snake.reset();
                 food = new Food(random.nextInt(gridSize), random.nextInt(gridSize));
+                playStartSound(); // play start sound
                 timer.start();
             } else {
-                System.exit(0);
+                //close window
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                frame.dispose();
             }
+        }
+        if (snake.getHead().equals(new Point(food.getX(), food.getY()))) {
+            snake.grow(food.getX(), food.getY());
+            food = new Food(random.nextInt(gridSize), random.nextInt(gridSize));
+            playEatSound.playEatSound(); // добавить эту строку
         }
 
         if (snake.getHead().equals(new Point(food.getX(), food.getY()))) {
@@ -101,7 +120,7 @@ public class GamePanel extends JPanel implements KeyListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        //Snake snakeInstance = snake;
+        //game.classes.Snake snakeInstance = snake;
 
         //draw grid
         for (int i = 0; i < gridSize; i++) {

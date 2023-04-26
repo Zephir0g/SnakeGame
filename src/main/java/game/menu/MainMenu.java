@@ -1,3 +1,8 @@
+package game.menu;
+
+import game.logic.GamePanel;
+import game.classes.Snake;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,7 +17,7 @@ public class MainMenu extends JPanel {
         startButton = new JButton("Start Game");
         startButton.addActionListener(e -> {
             GamePanel gamePanel = new GamePanel(new Snake(GamePanel.gridSize / 2, GamePanel.gridSize / 2));
-            JFrame frame = new JFrame("Snake Game");
+            JFrame frame = new JFrame("game.classes.Snake Game");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.add(gamePanel);
             frame.pack();
@@ -22,7 +27,7 @@ public class MainMenu extends JPanel {
             frame.setResizable(false);
 
         });
-        difficultyButton = new JButton("Change Difficulty");
+        difficultyButton = new JButton("Change Difficulty (in progress)");
         difficultyButton.addActionListener(e -> {
             // Code to change difficulty
         });

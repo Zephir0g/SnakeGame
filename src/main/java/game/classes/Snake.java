@@ -1,6 +1,9 @@
+package game.classes;
+
+import game.logic.GamePanel;
+
 import java.awt.*;
 import java.util.ArrayList;
-import javax.swing.*;
 
 public class Snake {
     public static final int UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3;
