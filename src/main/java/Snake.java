@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class Snake {
     public static final int UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3;
@@ -14,6 +15,8 @@ public class Snake {
         this.y = y;
         segments = new ArrayList<>();
         segments.add(new Point(x, y));
+        segments.add(new Point(x, y+1));
+        segments.add(new Point(x, y+2));
         direction = UP;
     }
 
@@ -90,10 +93,10 @@ public class Snake {
     public void reset() {
         // Set the initial position and direction of the snake
         segments.clear();
-        segments.add(new Point(3, 0));
-        segments.add(new Point(2, 0));
-        segments.add(new Point(1, 0));
-        direction = RIGHT;
+        segments.add(new Point(x, y));
+        segments.add(new Point(x, y+1));
+        segments.add(new Point(x, y+2));
+        direction = UP;
         hasEaten = false;
     }
 }
