@@ -1,18 +1,20 @@
 import java.awt.*;
 import java.util.ArrayList;
-import javax.swing.*;
 
 public class Snake {
     public static final int UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3;
     private int direction = UP;
+    private int x, y;
     private ArrayList<Point> segments = new ArrayList<>();
     private boolean hasEaten = false;
     private boolean moving = true;
 
-    public Snake() {
-        segments.add(new Point(GamePanel.gridSize / 2, GamePanel.gridSize / 2));
-        segments.add(new Point(GamePanel.gridSize / 2, GamePanel.gridSize / 2 + 1));
-        segments.add(new Point(GamePanel.gridSize / 2, GamePanel.gridSize / 2 + 2));
+    public Snake(int x, int y) {
+        this.x = x;
+        this.y = y;
+        segments = new ArrayList<>();
+        segments.add(new Point(x, y));
+        direction = UP;
     }
 
     public void move() {
@@ -94,8 +96,4 @@ public class Snake {
         direction = RIGHT;
         hasEaten = false;
     }
-
-
-
-
 }

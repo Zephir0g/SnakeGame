@@ -8,13 +8,12 @@ import java.util.Random;
 
 public class GamePanel extends JPanel implements KeyListener {
 
-    public static final int gridSize = 15; //set grid size n^2
-    private final Timer timer;
-    private Snake snake;
-    private Food food;
-    private Random random;
+        public static final int gridSize = 30; //set grid size n^2
+        private final Timer timer;
+        private Snake snake;
+        private Food food;
+        private Random random;
 
-    //GamePanel gamePanel = new GamePanel(snake);
 
     public GamePanel(Snake snake) {
         this.snake = snake;
@@ -35,7 +34,9 @@ public class GamePanel extends JPanel implements KeyListener {
         timer.start();
     }
 
-
+    public void changeDifficulty(int interval) {
+        timer.setDelay(interval);
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -58,23 +59,9 @@ public class GamePanel extends JPanel implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
-
     }
-
-//    public static void showGameOver() {
-//        Graphics g = getGraphics();
-//        g.setColor(Color.WHITE);
-//        g.setFont(new Font("Arial", Font.BOLD, 48));
-//        String gameOverText = "Game Over";
-//        int textWidth = g.getFontMetrics().stringWidth(gameOverText);
-//        int x = (getWidth() - textWidth) / 2;
-//        int y = getHeight() / 2;
-//        g.drawString(gameOverText, x, y);
-//    }
-
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-
     }
 
     public void tick(Snake snake) {
@@ -110,45 +97,18 @@ public class GamePanel extends JPanel implements KeyListener {
         repaint();
     }
 
-//    public void createRestartButton() {
-//        // Add restart button
-//        addRestartButton();
-//    }
-
-//    private void addRestartButton() {
-//        JButton restartButton = new JButton("Restart");
-//        restartButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                // Call reset method of the snake
-//                snake.reset();
-//            }
-//        });
-//        add(restartButton);
-//    }
-
-
-//    public void reset() {
-//        // Reset snake and food
-//        snake = new Snake();
-//        food = new Food(random.nextInt(gridSize), random.nextInt(gridSize));
-//
-//        // Restart timer
-//        timer.restart();
-//    }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         //Snake snakeInstance = snake;
 
-//        //draw grid
-//        for (int i = 0; i < gridSize; i++) {
-//            for (int j = 0; j < gridSize; j++) {
-//                g.drawRect(i * 20, j * 20, 20, 20);
-//            }
-//        }
+        //draw grid
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                g.drawRect(i * 20, j * 20, 20, 20);
+            }
+        }
 
         // draw snake
         for (Point segment : snake.getSegments()) {
@@ -161,15 +121,6 @@ public class GamePanel extends JPanel implements KeyListener {
         g.fillRect(food.getX() * 20, food.getY() * 20, 20, 20);
 
 }
-
-
-
-    //The getPreferredSize() method returns the preferred size of the component, which we set to 400x400 pixels.
-    // The getMinimumSize() method returns the minimum size of the component, which is equal to the preferred size in this case.
-//    @Override
-//    public Dimension getPreferredSize() {
-//        return new Dimension(gridSize * 20, gridSize * 20);
-//    }
 
     @Override
     public Dimension getMinimumSize() {
