@@ -59,6 +59,7 @@ public class Snake {
         }
     }
 
+
     public Point getHead() {
         return segments.get(0);
     }
@@ -69,6 +70,15 @@ public class Snake {
 
     public void eat() {
         hasEaten = true;
+    }
+
+    public boolean contains(Point point) {
+        for (Point segment : segments) {
+            if (segment.equals(point)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean checkCollision() {

@@ -30,6 +30,17 @@ public class GameSound {
         }
     }
 
+    public void playDeathSound() {
+        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(GameSound.class.getResourceAsStream("/sound/death.wav"));
+             AudioInputStream pcmStream = convertToPcm(audioInputStream)) {
+            clip = AudioSystem.getClip();
+            clip.open(pcmStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private AudioInputStream convertToPcm(AudioInputStream sourceStream) throws IOException, UnsupportedAudioFileException {
         AudioFormat sourceFormat = sourceStream.getFormat();
