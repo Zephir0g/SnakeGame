@@ -1,5 +1,6 @@
 package game.logic;
 
+import game.AI.SnakeAI;
 import game.classes.Food;
 import game.classes.Snake;
 
@@ -21,6 +22,8 @@ public class GamePanel extends JPanel implements KeyListener {
         private GameSound gameSound = new GameSound();
         private GameSound playEatSound = new GameSound();
         private GameSound playDeathSound = new GameSound();
+        private boolean autoPlayEnabled = false;
+        private SnakeAI snakeAI;
 
 
     public GamePanel(Snake snake) {
@@ -37,11 +40,24 @@ public class GamePanel extends JPanel implements KeyListener {
         timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (autoPlayEnabled) {
+                    snakeAI.makeMove(); // call method makeMove() from SnakeAI.java
+                }
                 tick(snake);
             }
         });
         timer.start();
     }
+
+    // on/off auto play mode (AI)
+    public void setAutoPlayEnabled(boolean autoPlayEnabled) {
+        this.autoPlayEnabled = autoPlayEnabled;
+        if (autoPlayEnabled) {
+            snakeAI = new SnakeAI(snake, this);
+        }
+    }
+
+
     public void playStartSound() {
         gameSound.playStartSound();
     }
@@ -65,6 +81,12 @@ public class GamePanel extends JPanel implements KeyListener {
                 break;
             case KeyEvent.VK_RIGHT:
                 snake.setDirection(Snake.RIGHT);
+                break;
+            case KeyEvent.VK_SPACE:
+                setAutoPlayEnabled(!autoPlayEnabled);
+                if (autoPlayEnabled) {
+                    snake.reset();
+                }
                 break;
         }
     }

@@ -59,6 +59,10 @@ public class Snake {
         }
     }
 
+    public int getDirection() {
+        return direction;
+    }
+
 
     public Point getHead() {
         return segments.get(0);
