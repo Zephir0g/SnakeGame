@@ -19,7 +19,6 @@ jar{
     manifest {
         attributes 'Main-Class': 'Main'
     }
-
 }
 
 test {

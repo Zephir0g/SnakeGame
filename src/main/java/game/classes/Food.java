@@ -12,7 +12,7 @@ public class Food {
         this.x = x;
         this.y = y;
     }
-
+// food
     public int getX() {
         return this.x;
     }
